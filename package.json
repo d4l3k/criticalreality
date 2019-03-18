@@ -1,0 +1,10 @@
+{
+  "name": "criticalreality",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Tristan Rice <rice@fn.lc>",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.102.1"
+  }
+}
