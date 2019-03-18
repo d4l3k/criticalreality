@@ -81,6 +81,8 @@ function generateScene (data) {
   scene = new THREE.Scene()
   scene.background = new THREE.Color(0x505050)
   camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000)
+  camera.position.set(0, 10, 0)
+  camera.lookAt(scene.position)
 
   const sky = new THREE.Sky()
   sky.scale.setScalar(450000)
@@ -133,24 +135,36 @@ function generateScene (data) {
   scene.add(controller2)
 }
 
+const speed = 0.5
+
+function onDocumentKeyDown (event) {
+  var keyCode = event.which
+  if (keyCode === 87) {
+    camera.position.z -= speed
+  } else if (keyCode === 83) {
+    camera.position.z += speed
+  } else if (keyCode === 65) {
+    camera.position.x -= speed
+  } else if (keyCode === 68) {
+    camera.position.x += speed
+  } else if (keyCode === 32) {
+    camera.position.set(0, 5, 0)
+  }
+}
+document.addEventListener('keydown', onDocumentKeyDown, false)
+
 function init () {
-  container = document.createElement('div')
-  document.body.appendChild(container)
-  var info = document.createElement('div')
-  info.style.position = 'absolute'
-  info.style.top = '10px'
-  info.style.width = '100%'
-  info.style.textAlign = 'center'
-  info.innerHTML = 'critical reality - webvr dnd'
-  container.appendChild(info)
+  const container = document.querySelector('#container')
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.setSize(window.innerWidth, window.innerHeight)
+
   // SHADOW
   renderer.shadowMap.enabled = true
   renderer.shadowMap.type = THREE.PCFSoftShadowMap
-  renderer.vr.enabled = true
+
+  renderer.vr.enabled = false
   container.appendChild(renderer.domElement)
 
   document.body.appendChild(WEBVR.createButton(renderer))
